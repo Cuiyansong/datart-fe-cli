@@ -1,0 +1,44 @@
+{
+  "name": "datart-fe-cli",
+  "version": "0.0.1",
+  "description": "datart frontend cli",
+  "main": "bin/generate",
+  "bin": {
+    "generate": "bin/generate"
+  },
+  "scripts": {
+    "test": "test",
+    "prettier": "prettier --write ."
+  },
+  "engines": {
+    "node": ">=10.x",
+    "npm": ">= 6.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cuiyansong/datart-fe-cli.git"
+  },
+  "author": "Stephen Cui",
+  "license": "UNKNOWN",
+  "bugs": {
+    "url": "https://github.com/Cuiyansong/datart-fe-cli/issues"
+  },
+  "homepage": "https://github.com/Cuiyansong/datart-fe-cli#readme",
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "commander": "^7.1.0",
+    "deep-keys": "^0.5.0",
+    "fs-extra": "^9.0.1",
+    "inquirer": "^7.3.3",
+    "lodash": "^4.17.20",
+    "replace": "^1.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.20.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "prettier": "2.2.1",
+    "rimraf": "^3.0.2"
+  }
+}
