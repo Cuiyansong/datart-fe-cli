@@ -16,6 +16,11 @@ const {
 const projectLevelQuestions = [
   {
     type: 'confirm',
+    name: 'showAll',
+    message: 'Does this project show basic files and folders?',
+  },
+  {
+    type: 'confirm',
     name: 'usesTypeScript',
     message: 'Does this project use TypeScript?',
   },
@@ -109,7 +114,7 @@ async function createCLIConfigFile() {
 
     const answers = await prompt(grcConfigQuestions);
 
-    outputFileSync('datart-cli-config.json', JSON.stringify(answers, null, 2));
+    outputFileSync('.datart-cli/datart-cli-config.json', JSON.stringify(answers, null, 2));
 
     console.log();
     console.log(
@@ -206,9 +211,9 @@ async function getCLIConfigFile() {
     // --- Check to see if the config file exists
 
     try {
-      accessSync('./datart-cli-config.json', constants.R_OK);
+      accessSync('.datart-cli/datart-cli-config.json', constants.R_OK);
       const currentConfigFile = JSON.parse(
-        readFileSync('./datart-cli-config.json'),
+        readFileSync('.datart-cli/datart-cli-config.json'),
       );
 
       /**

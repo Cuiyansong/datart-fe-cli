@@ -1,7 +1,9 @@
 const chalk = require('chalk');
 const path = require('path');
 const replace = require('replace');
-const { camelCase } = require('lodash');
+const {
+  camelCase
+} = require('lodash');
 const {
   existsSync,
   outputFileSync,
@@ -85,14 +87,20 @@ Please make sure you're pointing to the right custom template path in your datar
   }
 }
 
-function componentTemplateGenerator({ cmd, componentName, cliConfigFile }) {
+function componentTemplateGenerator({
+  cmd,
+  componentName,
+  cliConfigFile
+}) {
   const {
     cssPreprocessor,
     testLibrary,
     usesCssModule,
     usesTypeScript,
   } = cliConfigFile;
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -161,17 +169,43 @@ function componentTemplateGenerator({ cmd, componentName, cliConfigFile }) {
   };
 }
 
-function componentBaseGenerator({ cmd, componentName, cliConfigFile }) {
-  ensureDirSync('__tests__');
-  ensureDirSync('assets');
-  ensureDirSync('hooks');
-  ensureDirSync('slice');
+function componentBaseGenerator({
+  cmd,
+  componentName,
+  cliConfigFile
+}) {
+  const {
+    showAll
+  } = cliConfigFile;
 
-  ensureFileSync('constants.ts');
-  ensureFileSync('index.ts');
-  ensureFileSync('Loadable.tsx');
-  ensureFileSync(`${componentName}.d.ts`);
-  ensureFileSync('utils.ts');
+  if (showAll) {
+    const basePath = `${cmd.path}/${componentName}/`
+    ensureDirSync(basePath + '__tests__');
+    ensureDirSync(basePath + 'assets');
+    ensureDirSync(basePath + 'hooks');
+    ensureDirSync(basePath + 'slice');
+
+    ensureFileSync(basePath + 'constants.ts');
+    ensureFileSync(basePath + 'index.ts');
+    ensureFileSync(basePath + 'Loadable.tsx');
+    ensureFileSync(basePath + 'types.ts');
+    ensureFileSync(basePath + 'style.less');
+    ensureFileSync(basePath + 'utils.ts');
+
+    ensureDirSync(basePath + 'slice/__tests__');
+    ensureFileSync(basePath + 'slice/index.ts');
+    ensureFileSync(basePath + 'slice/selector.ts');
+    ensureFileSync(basePath + 'slice/types.ts');
+  }
+
+  const filename = '';
+  const template = {}
+
+  return {
+    componentPath: `${cmd.path}/${componentName}/${filename}`,
+    filename,
+    template,
+  };
 }
 
 function componentStyleTemplateGenerator({
@@ -179,7 +213,9 @@ function componentStyleTemplateGenerator({
   cmd,
   componentName,
 }) {
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -196,14 +232,17 @@ function componentStyleTemplateGenerator({
     template = customTemplate;
     filename = customTemplateFilename;
   } else {
-    const { cssPreprocessor, usesCssModule } = cliConfigFile;
+    const {
+      cssPreprocessor,
+      usesCssModule
+    } = cliConfigFile;
     const module = usesCssModule ? '.module' : '';
     const cssFilename = `${componentName}${module}.${cssPreprocessor}`;
 
     // --- Else use GRC built-in style template
 
     template = lessTempalte;
-    filename = cssFilename;
+    filename = 'style';
   }
 
   return {
@@ -213,9 +252,18 @@ function componentStyleTemplateGenerator({
   };
 }
 
-function componentTestTemplateGenerator({ cliConfigFile, cmd, componentName }) {
-  const { customTemplates } = cliConfigFile.component[cmd.type];
-  const { testLibrary, usesTypeScript } = cliConfigFile;
+function componentTestTemplateGenerator({
+  cliConfigFile,
+  cmd,
+  componentName
+}) {
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
+  const {
+    testLibrary,
+    usesTypeScript
+  } = cliConfigFile;
   let template = null;
   let filename = null;
 
@@ -237,7 +285,7 @@ function componentTestTemplateGenerator({ cliConfigFile, cmd, componentName }) {
   }
 
   return {
-    componentPath: `${cmd.path}/${componentName}/${filename}`,
+    componentPath: `${cmd.path}/${componentName}/${'__tests__'}/${filename}`,
     filename,
     template,
   };
@@ -248,8 +296,12 @@ function componentStoryTemplateGenerator({
   cmd,
   componentName,
 }) {
-  const { usesTypeScript } = cliConfigFile;
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    usesTypeScript
+  } = cliConfigFile;
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -269,9 +321,9 @@ function componentStoryTemplateGenerator({
     // --- Else use GRC built-in story template
 
     template = componentStoryTemplate;
-    filename = usesTypeScript
-      ? `${componentName}.stories.tsx`
-      : `${componentName}.stories.js`;
+    filename = usesTypeScript ?
+      `${componentName}.stories.tsx` :
+      `${componentName}.stories.js`;
   }
 
   return {
@@ -281,9 +333,17 @@ function componentStoryTemplateGenerator({
   };
 }
 
-function componentLazyTemplateGenerator({ cmd, componentName, cliConfigFile }) {
-  const { usesTypeScript } = cliConfigFile;
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+function componentLazyTemplateGenerator({
+  cmd,
+  componentName,
+  cliConfigFile
+}) {
+  const {
+    usesTypeScript
+  } = cliConfigFile;
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -303,9 +363,9 @@ function componentLazyTemplateGenerator({ cmd, componentName, cliConfigFile }) {
     // --- Else use GRC built-in lazy template
 
     template = usesTypeScript ? tsLazyTemplate : jsLazyTemplate;
-    filename = usesTypeScript
-      ? `${componentName}.lazy.tsx`
-      : `${componentName}.lazy.js`;
+    filename = usesTypeScript ?
+      `$Loadable.tsx` :
+      `$Loadable.js`;
   }
 
   return {
@@ -321,7 +381,9 @@ function customFileTemplateGenerator({
   cliConfigFile,
   componentFileType,
 }) {
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   const fileType = camelCase(componentFileType.split('with')[1]);
   let filename = null;
   let template = null;
@@ -362,7 +424,7 @@ Please make sure you're pointing to the right custom template path in your datar
 
 const buildInComponentFileTypes = {
   COMPONENT: 'component',
-  MUST: 'must',
+  FULL: 'full',
   STYLE: 'withStyle',
   TEST: 'withTest',
   STORY: 'withStory',
@@ -372,18 +434,18 @@ const buildInComponentFileTypes = {
 // --- Generate component template map
 
 const componentTemplateGeneratorMap = {
+  [buildInComponentFileTypes.FULL]: componentBaseGenerator,
   [buildInComponentFileTypes.COMPONENT]: componentTemplateGenerator,
-  [buildInComponentFileTypes.MUST]: componentBaseGenerator,
   [buildInComponentFileTypes.STYLE]: componentStyleTemplateGenerator,
   [buildInComponentFileTypes.TEST]: componentTestTemplateGenerator,
-  // [buildInComponentFileTypes.STORY]: componentStoryTemplateGenerator,
   [buildInComponentFileTypes.LAZY]: componentLazyTemplateGenerator,
+  // [buildInComponentFileTypes.STORY]: componentStoryTemplateGenerator,
 };
 
 function generateComponent(componentName, cmd, cliConfigFile) {
   const componentFileTypes = [
     'component',
-    'must',
+    'full',
     ...getCorrespondingComponentFileTypes(cmd),
   ];
 
@@ -394,48 +456,48 @@ function generateComponent(componentName, cmd, cliConfigFile) {
     if (
       (cmd[componentFileType] &&
         cmd[componentFileType].toString() === 'true') ||
-      componentFileType === buildInComponentFileTypes.COMPONENT
+      componentFileType === buildInComponentFileTypes.COMPONENT ||
+      componentFileType === buildInComponentFileTypes.FULL
     ) {
       const generateTemplate =
         componentTemplateGeneratorMap[componentFileType] ||
         customFileTemplateGenerator;
 
-      const { componentPath, filename, template } = generateTemplate({
+      const {
+        componentPath,
+        filename,
+        template
+      } = generateTemplate({
         cmd,
         componentName,
         cliConfigFile,
         componentFileType,
       });
 
-      // --- Make sure the component does not already exist in the path directory.
+      // escape file or folder generate when file type is must.
+      if (componentFileType === buildInComponentFileTypes.FULL) {
+        return;
+      }
 
-      if (existsSync(componentPath)) {
-        console.error(
-          chalk.red(
-            `${filename} already exists in this path "${componentPath}".`,
+      try {
+        outputFileSync(componentPath, template);
+
+        replace({
+          regex: 'TemplateName',
+          replacement: componentName,
+          paths: [componentPath],
+          recursive: false,
+          silent: true,
+        });
+
+        console.log(
+          chalk.green(
+            `${filename} was successfully created at ${componentPath}`,
           ),
         );
-      } else {
-        try {
-          outputFileSync(componentPath, template);
-
-          replace({
-            regex: 'TemplateName',
-            replacement: componentName,
-            paths: [componentPath],
-            recursive: false,
-            silent: true,
-          });
-
-          console.log(
-            chalk.green(
-              `${filename} was successfully created at ${componentPath}`,
-            ),
-          );
-        } catch (error) {
-          console.error(chalk.red(`${filename} failed and was not created.`));
-          console.error(error);
-        }
+      } catch (error) {
+        console.error(chalk.red(`${filename} failed and was not created.`));
+        console.error(error);
       }
     }
   });
