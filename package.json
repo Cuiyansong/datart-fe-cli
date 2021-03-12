@@ -1,11 +1,27 @@
 {
   "name": "datart-fe-cli",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "datart frontend cli",
-  "main": "bin/generate",
-  "bin": {
-    "generate": "bin/generate"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Cuiyansong/datart-fe-cli.git"
   },
+  "author": "Stephen Cui",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Cuiyansong/datart-fe-cli/issues"
+  },
+  "homepage": "https://github.com/Cuiyansong/datart-fe-cli#readme",
+  "main": "bin/datart-fe-cli",
+  "bin": {
+    "datart-fe-cli": "bin/datart-fe-cli"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE"
+  ],
   "keywords": [
     "react-cli",
     "datart"
@@ -18,16 +34,6 @@
     "node": ">=10.x",
     "npm": ">= 6.x"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Cuiyansong/datart-fe-cli.git"
-  },
-  "author": "Stephen Cui",
-  "license": "UNKNOWN",
-  "bugs": {
-    "url": "https://github.com/Cuiyansong/datart-fe-cli/issues"
-  },
-  "homepage": "https://github.com/Cuiyansong/datart-fe-cli#readme",
   "dependencies": {
     "chalk": "^4.1.0",
     "commander": "^7.1.0",

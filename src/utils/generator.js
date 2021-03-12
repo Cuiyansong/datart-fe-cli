@@ -2,7 +2,13 @@ const chalk = require('chalk');
 const path = require('path');
 const replace = require('replace');
 const { camelCase } = require('lodash');
-const { existsSync, outputFileSync, readFileSync } = require('fs-extra');
+const {
+  existsSync,
+  outputFileSync,
+  readFileSync,
+  ensureDirSync,
+  ensureFileSync,
+} = require('fs-extra');
 
 const jsTemplate = require('../templates/components/react-component-javascript');
 const tsTemplate = require('../templates/components/react-component-typescript');
@@ -153,6 +159,19 @@ function componentTemplateGenerator({ cmd, componentName, cliConfigFile }) {
     filename,
     template,
   };
+}
+
+function componentBaseGenerator({ cmd, componentName, cliConfigFile }) {
+  ensureDirSync('__tests__');
+  ensureDirSync('assets');
+  ensureDirSync('hooks');
+  ensureDirSync('slice');
+
+  ensureFileSync('constants.ts');
+  ensureFileSync('index.ts');
+  ensureFileSync('Loadable.tsx');
+  ensureFileSync(`${componentName}.d.ts`);
+  ensureFileSync('utils.ts');
 }
 
 function componentStyleTemplateGenerator({
@@ -343,6 +362,7 @@ Please make sure you're pointing to the right custom template path in your datar
 
 const buildInComponentFileTypes = {
   COMPONENT: 'component',
+  MUST: 'must',
   STYLE: 'withStyle',
   TEST: 'withTest',
   STORY: 'withStory',
@@ -353,6 +373,7 @@ const buildInComponentFileTypes = {
 
 const componentTemplateGeneratorMap = {
   [buildInComponentFileTypes.COMPONENT]: componentTemplateGenerator,
+  [buildInComponentFileTypes.MUST]: componentBaseGenerator,
   [buildInComponentFileTypes.STYLE]: componentStyleTemplateGenerator,
   [buildInComponentFileTypes.TEST]: componentTestTemplateGenerator,
   // [buildInComponentFileTypes.STORY]: componentStoryTemplateGenerator,
@@ -362,6 +383,7 @@ const componentTemplateGeneratorMap = {
 function generateComponent(componentName, cmd, cliConfigFile) {
   const componentFileTypes = [
     'component',
+    'must',
     ...getCorrespondingComponentFileTypes(cmd),
   ];
 
