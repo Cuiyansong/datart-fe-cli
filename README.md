@@ -13,9 +13,9 @@ run command `npm install -g datart-fe-cli@latest`
 
 ## How to Use
 
-> Note: if not setup cli config, please run `npm run datart-fe-cli component XXX --path=[component-root-path]` step by step
+> Note: if not setup cli config, please run `datart-fe-cli component XXX --path=[component-root-path]` step by step
 
-`npm run datart-fe-cli component XXX --path=[component-root-path]`
+run command `datart-fe-cli component XXX --path=[component-root-path]`
 
 ## Development
 
