@@ -114,7 +114,10 @@ async function createCLIConfigFile() {
 
     const answers = await prompt(grcConfigQuestions);
 
-    outputFileSync('.datart-cli/datart-cli-config.json', JSON.stringify(answers, null, 2));
+    outputFileSync(
+      '.datart-cli/datart-cli-config.json',
+      JSON.stringify(answers, null, 2),
+    );
 
     console.log();
     console.log(
