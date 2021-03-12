@@ -33,13 +33,13 @@ const projectLevelQuestions = [
     type: 'list',
     name: 'cssPreprocessor',
     message: 'Does this project use a CSS Preprocessor?',
-    choices: ['css', 'scss', 'less', 'styl'],
+    choices: ['less'],
   },
   {
     type: 'list',
     name: 'testLibrary',
     message: 'What testing library does your project use?',
-    choices: ['Testing Library', 'Enzyme', 'None'],
+    choices: ['Enzyme', 'Testing Library'],
   },
 ];
 
@@ -65,12 +65,12 @@ const componentLevelQuestions = [
     message:
       'Would you like to create a corresponding test file with each component you generate?',
   },
-  {
-    type: 'confirm',
-    name: 'component.default.withStory',
-    message:
-      'Would you like to create a corresponding story with each component you generate?',
-  },
+  // {
+  //   type: 'confirm',
+  //   name: 'component.default.withStory',
+  //   message:
+  //     'Would you like to create a corresponding story with each component you generate?',
+  // },
   {
     type: 'confirm',
     name: 'component.default.withLazy',
