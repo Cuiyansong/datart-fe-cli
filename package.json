@@ -6,6 +6,10 @@
   "bin": {
     "generate": "bin/generate"
   },
+  "keywords": [
+    "react-cli",
+    "datart"
+  ],
   "scripts": {
     "test": "test",
     "prettier": "prettier --write ."

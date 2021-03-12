@@ -1,5 +1,4 @@
-module.exports = 
-`/**
+module.exports = `/**
  * Datart
  *
  * Copyright 2021

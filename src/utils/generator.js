@@ -1,14 +1,8 @@
 const chalk = require('chalk');
 const path = require('path');
 const replace = require('replace');
-const {
-  camelCase
-} = require('lodash');
-const {
-  existsSync,
-  outputFileSync,
-  readFileSync
-} = require('fs-extra');
+const { camelCase } = require('lodash');
+const { existsSync, outputFileSync, readFileSync } = require('fs-extra');
 
 const jsTemplate = require('../templates/components/react-component-javascript');
 const tsTemplate = require('../templates/components/react-component-typescript');
@@ -85,20 +79,14 @@ Please make sure you're pointing to the right custom template path in your datar
   }
 }
 
-function componentTemplateGenerator({
-  cmd,
-  componentName,
-  cliConfigFile
-}) {
+function componentTemplateGenerator({ cmd, componentName, cliConfigFile }) {
   const {
     cssPreprocessor,
     testLibrary,
     usesCssModule,
     usesTypeScript,
   } = cliConfigFile;
-  const {
-    customTemplates
-  } = cliConfigFile.component[cmd.type];
+  const { customTemplates } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -172,9 +160,7 @@ function componentStyleTemplateGenerator({
   cmd,
   componentName,
 }) {
-  const {
-    customTemplates
-  } = cliConfigFile.component[cmd.type];
+  const { customTemplates } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -191,10 +177,7 @@ function componentStyleTemplateGenerator({
     template = customTemplate;
     filename = customTemplateFilename;
   } else {
-    const {
-      cssPreprocessor,
-      usesCssModule
-    } = cliConfigFile;
+    const { cssPreprocessor, usesCssModule } = cliConfigFile;
     const module = usesCssModule ? '.module' : '';
     const cssFilename = `${componentName}${module}.${cssPreprocessor}`;
 
@@ -211,18 +194,9 @@ function componentStyleTemplateGenerator({
   };
 }
 
-function componentTestTemplateGenerator({
-  cliConfigFile,
-  cmd,
-  componentName
-}) {
-  const {
-    customTemplates
-  } = cliConfigFile.component[cmd.type];
-  const {
-    testLibrary,
-    usesTypeScript
-  } = cliConfigFile;
+function componentTestTemplateGenerator({ cliConfigFile, cmd, componentName }) {
+  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const { testLibrary, usesTypeScript } = cliConfigFile;
   let template = null;
   let filename = null;
 
@@ -255,12 +229,8 @@ function componentStoryTemplateGenerator({
   cmd,
   componentName,
 }) {
-  const {
-    usesTypeScript
-  } = cliConfigFile;
-  const {
-    customTemplates
-  } = cliConfigFile.component[cmd.type];
+  const { usesTypeScript } = cliConfigFile;
+  const { customTemplates } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -280,9 +250,9 @@ function componentStoryTemplateGenerator({
     // --- Else use GRC built-in story template
 
     template = componentStoryTemplate;
-    filename = usesTypeScript ?
-      `${componentName}.stories.tsx` :
-      `${componentName}.stories.js`;
+    filename = usesTypeScript
+      ? `${componentName}.stories.tsx`
+      : `${componentName}.stories.js`;
   }
 
   return {
@@ -292,17 +262,9 @@ function componentStoryTemplateGenerator({
   };
 }
 
-function componentLazyTemplateGenerator({
-  cmd,
-  componentName,
-  cliConfigFile
-}) {
-  const {
-    usesTypeScript
-  } = cliConfigFile;
-  const {
-    customTemplates
-  } = cliConfigFile.component[cmd.type];
+function componentLazyTemplateGenerator({ cmd, componentName, cliConfigFile }) {
+  const { usesTypeScript } = cliConfigFile;
+  const { customTemplates } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -322,9 +284,9 @@ function componentLazyTemplateGenerator({
     // --- Else use GRC built-in lazy template
 
     template = usesTypeScript ? tsLazyTemplate : jsLazyTemplate;
-    filename = usesTypeScript ?
-      `${componentName}.lazy.tsx` :
-      `${componentName}.lazy.js`;
+    filename = usesTypeScript
+      ? `${componentName}.lazy.tsx`
+      : `${componentName}.lazy.js`;
   }
 
   return {
@@ -340,9 +302,7 @@ function customFileTemplateGenerator({
   cliConfigFile,
   componentFileType,
 }) {
-  const {
-    customTemplates
-  } = cliConfigFile.component[cmd.type];
+  const { customTemplates } = cliConfigFile.component[cmd.type];
   const fileType = camelCase(componentFileType.split('with')[1]);
   let filename = null;
   let template = null;
@@ -418,11 +378,7 @@ function generateComponent(componentName, cmd, cliConfigFile) {
         componentTemplateGeneratorMap[componentFileType] ||
         customFileTemplateGenerator;
 
-      const {
-        componentPath,
-        filename,
-        template
-      } = generateTemplate({
+      const { componentPath, filename, template } = generateTemplate({
         cmd,
         componentName,
         cliConfigFile,
