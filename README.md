@@ -13,15 +13,30 @@ run command `npm install -g datart-fe-cli@latest`
 
 ## How to Use
 
-> Note: if not setup cli config, please run `datart-fe-cli component XXX --path=[component-root-path]` step by step
+> Note: if not setup cli config, please run `datart-fe-cli component [ComponentName] --path=[ComponentRootPath]` step by step
 
-run command `datart-fe-cli component XXX --path=[component-root-path]`
+### Convention
+command alias:
+    - component: c
+
+
+[ComponentName]: the target component name, like `MyViz`
+[ComponentRootPath]: the target component output path, like `dist/component`
+
+### create standard component
+run command `datart-fe-cli c [ComponentName] --path=[ComponentRootPath] --type=full`
+
+### create cutomized standard component
+run command `datart-fe-cli c [ComponentName] --path=[ComponentRootPath] --type=default [--withTest=false|--withStyle=false|--withLazy=false]`
+
+### create `viz-style` component
+run command `datart-fe-cli c [ComponentName] --path=[ComponentRootPath] --type=vizStyle`
 
 ## Development
 
 > Note: if not setup cli config, please run `sudo node ./bin/generate` step by step
 
-run `sudo node ./bin/generate component XXX`
+run `sudo node ./bin/generate component [ComponentName]`
 
 ## Publish to NPM
 

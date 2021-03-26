@@ -1,0 +1,23 @@
+{
+  "usesTypeScript": true,
+  "usesCssModule": true,
+  "cssPreprocessor": "less",
+  "testLibrary": "Enzyme",
+  "component": {
+    "default": {
+      "path": "dist/component",
+      "withStyle": true,
+      "withTest": true,
+      "withLazy": true
+    },
+    "vizStyle": {
+      "path": "dist/component",
+      "withTest": true
+    },
+    "full": {
+      "path": "dist/component",
+      "withTest": true
+    }
+  },
+  "showAll": true
+}

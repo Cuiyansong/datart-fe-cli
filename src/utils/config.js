@@ -16,11 +16,6 @@ const {
 const projectLevelQuestions = [
   {
     type: 'confirm',
-    name: 'showAll',
-    message: 'Does this project show basic files and folders?',
-  },
-  {
-    type: 'confirm',
     name: 'usesTypeScript',
     message: 'Does this project use TypeScript?',
   },

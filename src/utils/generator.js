@@ -1,7 +1,9 @@
 const chalk = require('chalk');
 const path = require('path');
 const replace = require('replace');
-const { camelCase } = require('lodash');
+const {
+  camelCase
+} = require('lodash');
 const {
   existsSync,
   outputFileSync,
@@ -17,6 +19,9 @@ const jsLazyTemplate = require('../templates/components/react-component-javascri
 const tsLazyTemplate = require('../templates/components/react-component-typescript-lazy');
 const testEnzymeJsTemplate = require('../templates/components/react-component-test-enzyme-javascript');
 const licenseTmplate = require('../templates/components/license');
+const vizSytleIndexTemplate = require('../templates/components/viz-style-templates/indexTemplate');
+const vizSytleComponentTemplate = require('../templates/components/viz-style-templates/component');
+const vizSytleVizConfigTemplate = require('../templates/components/viz-style-templates/VizConfig');
 // const componentStoryTemplate = require('../templates/component/componentStoryTemplate');
 
 function getComponentByType(args, cliConfigFile) {
@@ -86,14 +91,20 @@ Please make sure you're pointing to the right custom template path in your datar
   }
 }
 
-function componentTemplateGenerator({ cmd, componentName, cliConfigFile }) {
+function componentTemplateGenerator({
+  cmd,
+  componentName,
+  cliConfigFile
+}) {
   const {
     cssPreprocessor,
     testLibrary,
     usesCssModule,
     usesTypeScript,
   } = cliConfigFile;
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -162,10 +173,19 @@ function componentTemplateGenerator({ cmd, componentName, cliConfigFile }) {
   };
 }
 
-function componentBaseGenerator({ cmd, componentName, cliConfigFile }) {
-  const { showAll } = cliConfigFile;
+function componentBaseGenerator({
+  cmd,
+  componentName,
+  cliConfigFile
+}) {
+  const {
+    showAll
+  } = cliConfigFile;
+  const {
+    type
+  } = cmd;
 
-  if (showAll) {
+  if (type === buildInComponentFileTypes.FULL) {
     const basePath = `${cmd.path}/${componentName}/`;
     const license = licenseTmplate;
     ensureDirSync(basePath + '__tests__');
@@ -195,12 +215,43 @@ function componentBaseGenerator({ cmd, componentName, cliConfigFile }) {
   };
 }
 
+function componentVizStyleTemplateGenerator({
+  cmd,
+  componentName,
+  cliConfigFile
+}) {
+  const {
+    type
+  } = cmd;
+
+  if (type === buildInComponentFileTypes.VIZSTYLE) {
+    const basePath = `${cmd.path}/${componentName}/`;
+    const replace = (source, pattern, value) => source.replace(pattern, value);
+
+    ensureDirSync(basePath + '__tests__');
+    outputFileSync(basePath + 'index.ts', replace(vizSytleIndexTemplate, /\$TemplateName/g, componentName));
+    outputFileSync(basePath + `${componentName}.tsx`, replace(vizSytleComponentTemplate, /\$TemplateName/g, componentName));
+    outputFileSync(basePath + 'VizConfig.ts', replace(vizSytleVizConfigTemplate, /\$TemplateName/g, componentName));
+  }
+
+  const filename = '';
+  const template = {};
+
+  return {
+    componentPath: `${cmd.path}/${componentName}/${filename}`,
+    filename,
+    template,
+  };
+}
+
 function componentStyleTemplateGenerator({
   cliConfigFile,
   cmd,
   componentName,
 }) {
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -217,7 +268,10 @@ function componentStyleTemplateGenerator({
     template = customTemplate;
     filename = customTemplateFilename;
   } else {
-    const { cssPreprocessor, usesCssModule } = cliConfigFile;
+    const {
+      cssPreprocessor,
+      usesCssModule
+    } = cliConfigFile;
     const module = usesCssModule ? '.module' : '';
     const cssFilename = `${componentName}${module}.${cssPreprocessor}`;
 
@@ -234,9 +288,18 @@ function componentStyleTemplateGenerator({
   };
 }
 
-function componentTestTemplateGenerator({ cliConfigFile, cmd, componentName }) {
-  const { customTemplates } = cliConfigFile.component[cmd.type];
-  const { testLibrary, usesTypeScript } = cliConfigFile;
+function componentTestTemplateGenerator({
+  cliConfigFile,
+  cmd,
+  componentName
+}) {
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
+  const {
+    testLibrary,
+    usesTypeScript
+  } = cliConfigFile;
   let template = null;
   let filename = null;
 
@@ -269,8 +332,12 @@ function componentStoryTemplateGenerator({
   cmd,
   componentName,
 }) {
-  const { usesTypeScript } = cliConfigFile;
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    usesTypeScript
+  } = cliConfigFile;
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -290,9 +357,9 @@ function componentStoryTemplateGenerator({
     // --- Else use GRC built-in story template
 
     template = componentStoryTemplate;
-    filename = usesTypeScript
-      ? `${componentName}.stories.tsx`
-      : `${componentName}.stories.js`;
+    filename = usesTypeScript ?
+      `${componentName}.stories.tsx` :
+      `${componentName}.stories.js`;
   }
 
   return {
@@ -302,9 +369,17 @@ function componentStoryTemplateGenerator({
   };
 }
 
-function componentLazyTemplateGenerator({ cmd, componentName, cliConfigFile }) {
-  const { usesTypeScript } = cliConfigFile;
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+function componentLazyTemplateGenerator({
+  cmd,
+  componentName,
+  cliConfigFile
+}) {
+  const {
+    usesTypeScript
+  } = cliConfigFile;
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   let template = null;
   let filename = null;
 
@@ -340,7 +415,9 @@ function customFileTemplateGenerator({
   cliConfigFile,
   componentFileType,
 }) {
-  const { customTemplates } = cliConfigFile.component[cmd.type];
+  const {
+    customTemplates
+  } = cliConfigFile.component[cmd.type];
   const fileType = camelCase(componentFileType.split('with')[1]);
   let filename = null;
   let template = null;
@@ -382,6 +459,7 @@ Please make sure you're pointing to the right custom template path in your datar
 const buildInComponentFileTypes = {
   COMPONENT: 'component',
   FULL: 'full',
+  VIZSTYLE: 'vizStyle',
   STYLE: 'withStyle',
   TEST: 'withTest',
   STORY: 'withStory',
@@ -396,6 +474,7 @@ const componentTemplateGeneratorMap = {
   [buildInComponentFileTypes.STYLE]: componentStyleTemplateGenerator,
   [buildInComponentFileTypes.TEST]: componentTestTemplateGenerator,
   [buildInComponentFileTypes.LAZY]: componentLazyTemplateGenerator,
+  [buildInComponentFileTypes.VIZSTYLE]: componentVizStyleTemplateGenerator,
   // [buildInComponentFileTypes.STORY]: componentStoryTemplateGenerator,
 };
 
@@ -403,6 +482,7 @@ function generateComponent(componentName, cmd, cliConfigFile) {
   const componentFileTypes = [
     'component',
     'full',
+    'vizStyle',
     ...getCorrespondingComponentFileTypes(cmd),
   ];
 
@@ -414,13 +494,18 @@ function generateComponent(componentName, cmd, cliConfigFile) {
       (cmd[componentFileType] &&
         cmd[componentFileType].toString() === 'true') ||
       componentFileType === buildInComponentFileTypes.COMPONENT ||
-      componentFileType === buildInComponentFileTypes.FULL
+      componentFileType === buildInComponentFileTypes.FULL ||
+      componentFileType === buildInComponentFileTypes.VIZSTYLE
     ) {
       const generateTemplate =
         componentTemplateGeneratorMap[componentFileType] ||
         customFileTemplateGenerator;
 
-      const { componentPath, filename, template } = generateTemplate({
+      const {
+        componentPath,
+        filename,
+        template
+      } = generateTemplate({
         cmd,
         componentName,
         cliConfigFile,
@@ -428,7 +513,8 @@ function generateComponent(componentName, cmd, cliConfigFile) {
       });
 
       // escape file or folder generate when file type is must.
-      if (componentFileType === buildInComponentFileTypes.FULL) {
+      if (componentFileType === buildInComponentFileTypes.FULL ||
+        componentFileType === buildInComponentFileTypes.VIZSTYLE) {
         return;
       }
 
