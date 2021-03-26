@@ -12,13 +12,12 @@
 run command `npm install -g datart-fe-cli@latest`
 
 ## How to Use
-
+> [Optional] Copy file `datart-cli-config.json` from `.datart-cli` folder if cannot find type.
 > Note: if not setup cli config, please run `datart-fe-cli component [ComponentName] --path=[ComponentRootPath]` step by step
 
 ### Convention
 command alias:
     - component: c
-
 
 [ComponentName]: the target component name, like `MyViz`
 [ComponentRootPath]: the target component output path, like `dist/component`
