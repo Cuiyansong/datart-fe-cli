@@ -40,7 +40,19 @@ class $TemplateName extends Chart {
       win: any,
     ): void {
       let chart: any = null;
-      let option: any = {};
+      let option = {
+        xAxis: {
+            type: 'category',
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            data: [150, 230, 224, 218, 135, 147, 260],
+            type: 'line'
+        }]
+      };
   
       hooks.subscribe('mounted', (containerId: string) => {
         chart = win.echarts.init(doc.getElementById(containerId), 'default');
