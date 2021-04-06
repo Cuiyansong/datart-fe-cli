@@ -18,62 +18,33 @@ module.exports = `/**
 
 import Chart from 'app/models/Chart';
 import ChartEventBroker from 'app/models/ChartEventBroker';
-import VizConfig from './VizConfig';
+import Config from './config';
 
 class $TemplateName extends Chart {
     constructor(id?, name?) {
+      // TODO: change the chart name and it should be unique.
       super(id || 'line', name || 'Basic Line Chart');
     }
   
-    config = {
-      vizConfig: VizConfig,
-    };
+    // TODO: if the chart is no extra dependency that is no need to set this value.
+    isISOContainer = 'xxxx-container';
+    config = Config;
+    dependency = [];
+    chart: any = null;
   
-    getDependencies(): string[] {
-      return ['https://lib.baomitu.com/echarts/5.0.2/echarts.min.js'];
+    onMount(containerId: string): void {
+      this.chart = this.window.echarts.init(
+        this.document.getElementById(containerId),
+        'default',
+      );
+      this.chart.setOption(this.option);
     }
   
-    initHooks<TData>(
-      hooks: ChartEventBroker,
-      config: any,
-      doc: any,
-      win: any,
-    ): void {
-      let chart: any = null;
-      let option = {
-        xAxis: {
-            type: 'category',
-            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            type: 'value'
-        },
-        series: [{
-            data: [150, 230, 224, 218, 135, 147, 260],
-            type: 'line'
-        }]
-      };
-  
-      hooks.subscribe('mounted', (containerId: string) => {
-        chart = win.echarts.init(doc.getElementById(containerId), 'default');
-        // TODO: optinal render table, without any data or just render default sample chart.
-        chart.setOption(option);
-      });
-  
-      hooks.subscribe('updated', (data: TData) => {
-        chart &&
-          chart.setOption(
-            Object.assign({}, option, {
-              xAxis: { data: ['1', '2'] },
-              series: [{ data: ['1'], type: 'line' }],
-            }),
-          );
-      });
-  
-      hooks.subscribe('unmount', () => {
-        chart && chart.dispose();
-      });
+    onUpdated({ config }: { config: any }): void {
+      this.chart.setOption(Object.assign({}, config));
     }
+  
+    onUnMount(): void {}
   }
   
 export default $TemplateName;

@@ -18,5 +18,5 @@ module.exports = `/**
 
 import $TemplateName from './$TemplateName';
 
-export default $TemplateName; 
+export default $TemplateName;
 `;

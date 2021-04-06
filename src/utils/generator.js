@@ -21,7 +21,7 @@ const testEnzymeJsTemplate = require('../templates/components/react-component-te
 const licenseTmplate = require('../templates/components/license');
 const vizSytleIndexTemplate = require('../templates/components/viz-style-templates/indexTemplate');
 const vizSytleComponentTemplate = require('../templates/components/viz-style-templates/component');
-const vizSytleVizConfigTemplate = require('../templates/components/viz-style-templates/VizConfig');
+const vizSytleConfigTemplate = require('../templates/components/viz-style-templates/config');
 // const componentStoryTemplate = require('../templates/component/componentStoryTemplate');
 
 function getComponentByType(args, cliConfigFile) {
@@ -231,7 +231,7 @@ function componentVizStyleTemplateGenerator({
     ensureDirSync(basePath + '__tests__');
     outputFileSync(basePath + 'index.ts', replace(vizSytleIndexTemplate, /\$TemplateName/g, componentName));
     outputFileSync(basePath + `${componentName}.tsx`, replace(vizSytleComponentTemplate, /\$TemplateName/g, componentName));
-    outputFileSync(basePath + 'VizConfig.ts', replace(vizSytleVizConfigTemplate, /\$TemplateName/g, componentName));
+    outputFileSync(basePath + 'config.ts', replace(vizSytleConfigTemplate, /\$TemplateName/g, componentName));
   }
 
   const filename = '';

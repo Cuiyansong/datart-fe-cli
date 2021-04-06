@@ -16,9 +16,9 @@ module.exports = `/**
  * limitations under the License.
  */
 
-import VizConfig from 'app/models/VizConfig';
+import ChartConfig from 'app/models/ChartConfig';
 
-const vizConfig: VizConfig = {
+const config: ChartConfig = {
   data: [
     {
       label: 'metrics',
@@ -132,5 +132,5 @@ const vizConfig: VizConfig = {
   ],
 };
 
-export default vizConfig;
+export default config;
 `;
