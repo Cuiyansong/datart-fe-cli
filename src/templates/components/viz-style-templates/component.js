@@ -21,9 +21,9 @@ import ChartEventBroker from 'app/models/ChartEventBroker';
 import Config from './config';
 
 class $TemplateName extends Chart {
-    constructor(id?, name?) {
+    constructor() {
       // TODO: change the chart name and it should be unique.
-      super(id || 'line', name || 'Basic Line Chart');
+      super('line', 'Basic Line Chart', 'line-chart');
     }
   
     // TODO: if the chart is no extra dependency that is no need to set this value.
