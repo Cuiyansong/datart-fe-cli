@@ -21,31 +21,43 @@ import ChartEventBroker from 'app/models/ChartEventBroker';
 import Config from './config';
 
 class $TemplateName extends Chart {
-    constructor() {
-      // TODO: change the chart name and it should be unique.
-      super('line', 'Basic Line Chart', 'line-chart');
-    }
-  
-    // TODO: if the chart is no extra dependency that is no need to set this value.
-    isISOContainer = 'xxxx-container';
-    config = Config;
-    dependency = [];
-    chart: any = null;
-  
-    onMount(containerId: string): void {
-      this.chart = this.window.echarts.init(
-        this.document.getElementById(containerId),
-        'default',
-      );
-      this.chart.setOption(this.option);
-    }
-  
-    onUpdated({ config }: { config: any }): void {
-      this.chart.setOption(Object.assign({}, config));
-    }
-  
-    onUnMount(): void {}
+  // TODO: if the chart is no extra dependency that is no need to set this value.
+  isISOContainer = 'xxxx-container';
+  config = Config;
+  dependency = [];
+  chart: any = null;
+
+  constructor() {
+    // TODO: change the chart name and it should be unique.
+    super('line', 'Basic Line Chart', 'chart-line');
+    this.meta.requirement = {
+      group: 1,
+      aggregate: [1, 999],
+    };
   }
+
+  onMount(containerId: string): void {
+    this.chart = this.window.echarts.init(
+      this.document.getElementById(containerId),
+      'default',
+    );
+    this.chart.setOption({});
+  }
+
+  onUpdated(props): void {
+    if (!props.dataset || !props.dataset.columns || !props.config) {
+      return;
+    }
+    this.chart?.clear();
+    if (!this.isMatchRequirement(props.config)) {
+      return;
+    }
+    const newOptions = this.getOptions(props.dataset, props.config);
+    this.chart?.setOption(Object.assign({}, newOptions));
+  }
+
+  onUnMount(): void {}
+}
   
 export default $TemplateName;
 `;

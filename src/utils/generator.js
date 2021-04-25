@@ -230,7 +230,7 @@ function componentVizStyleTemplateGenerator({
 
     ensureDirSync(basePath + '__tests__');
     outputFileSync(basePath + 'index.ts', replace(vizSytleIndexTemplate, /\$TemplateName/g, componentName));
-    outputFileSync(basePath + `${componentName}.tsx`, replace(vizSytleComponentTemplate, /\$TemplateName/g, componentName));
+    outputFileSync(basePath + `${componentName}.ts`, replace(vizSytleComponentTemplate, /\$TemplateName/g, componentName));
     outputFileSync(basePath + 'config.ts', replace(vizSytleConfigTemplate, /\$TemplateName/g, componentName));
   }
 
