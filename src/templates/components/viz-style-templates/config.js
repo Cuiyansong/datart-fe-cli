@@ -36,26 +36,26 @@ const config: ChartConfig = {
     {
       label: 'label',
       key: 'label',
+      comType: 'group',
       rows: [
         {
           label: 'showLabel',
           key: 'showLabel',
           default: false,
           comType: 'checkbox',
-          options: [],
+          options: {},
         },
         {
           label: 'showLabelBySwitch',
           key: 'showLabelBySwitch',
           default: true,
           comType: 'switch',
-          options: [],
+          options: {},
           watcher: {
             deps: ['showLabel'],
             action: ({ ...props }) => {
               return {
-                comType: props.showLabel ? 'checkbox' : 'switch',
-                options: [{ disabled: props.showLabel }],
+                disabled: !props.showLabel,
               };
             },
           },
@@ -64,24 +64,22 @@ const config: ChartConfig = {
           label: 'showDataColumns',
           key: 'dataColumns',
           comType: 'columnSelector',
-          options: [
-            {
-              getItems: cols => {
-                const sections = (cols || []).filter(col =>
-                  ['metrics', 'deminsion'].includes(col.key),
-                );
-                const columns = sections.reduce(
-                  (acc, cur) => acc.concat(cur.columns || []),
-                  [],
-                );
-                return columns.map(c => ({
-                  id: c.colName,
-                  key: c.colName,
-                  label: c.colName,
-                }));
-              },
+          options: {
+            getItems: cols => {
+              const sections = (cols || []).filter(col =>
+                ['metrics', 'deminsion'].includes(col.key),
+              );
+              const columns = sections.reduce(
+                (acc, cur) => acc.concat(cur.columns || []),
+                [],
+              );
+              return columns.map(c => ({
+                id: c.colName,
+                key: c.colName,
+                label: c.label,
+              }));
             },
-          ],
+          },
         },
         {
           label: 'fontFamily',
