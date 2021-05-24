@@ -22,18 +22,20 @@ import Config from './config';
 
 class $TemplateName extends Chart {
   // TODO: if the chart is no extra dependency that is no need to set this value.
-  isISOContainer = 'xxxx-container';
+  isISOContainer = 'xxx-chart';
   config = Config;
-  dependency = [];
-  chart: any = null;
+  dependency = [
+    'https://cdnjs.cloudflare.com/ajax/libs/antd/4.15.2/antd.min.css',
+  ];
 
   constructor() {
-    // TODO: change the chart name and it should be unique.
-    super('line', 'Basic Line Chart', 'chart-line');
-    this.meta.requirement = {
-      group: 1,
-      aggregate: [1, 999],
-    };
+    super('xxx-table-id', 'XXX Chart Name', 'xxx-icon', ReactTable);
+    this.meta.requirements = [
+      {
+        group: [0, 999],
+        aggregate: [0, 999],
+      },
+    ];
   }
 
   onMount(containerId: string): void {
@@ -41,7 +43,6 @@ class $TemplateName extends Chart {
       this.document.getElementById(containerId),
       'default',
     );
-    this.chart.setOption({});
   }
 
   onUpdated(props): void {
@@ -56,7 +57,11 @@ class $TemplateName extends Chart {
     this.chart?.setOption(Object.assign({}, newOptions));
   }
 
-  onUnMount(): void {}
+  onUnMount(): void {
+    this.chart?.dispose();
+  }
+
+  getOptions(dataset: VizDataset, config: ChartConfig) { return {}; }
 }
   
 export default $TemplateName;

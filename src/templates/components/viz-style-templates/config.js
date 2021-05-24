@@ -16,7 +16,7 @@ module.exports = `/**
  * limitations under the License.
  */
 
-import ChartConfig from 'app/models/ChartConfig';
+import ChartConfig from 'app/pages/VizWorkbenchPage/models/ChartConfig';
 
 const config: ChartConfig = {
   data: [
