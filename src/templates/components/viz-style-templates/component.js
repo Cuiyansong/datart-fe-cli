@@ -16,39 +16,56 @@ module.exports = `/**
  * limitations under the License.
  */
 
-import Chart from 'app/models/Chart';
-import ChartEventBroker from 'app/models/ChartEventBroker';
+import Chart from 'app/pages/ChartWorkbenchPage/models/Chart';
+import ChartConfig, {
+  ChartDataSectionField,
+  ChartDataSectionType,
+} from 'app/pages/ChartWorkbenchPage/models/ChartConfig';
+import ChartDataset from 'app/pages/ChartWorkbenchPage/models/ChartDataset';
+import {
+  getColumnRenderName,
+  getStyleValueByGroup,
+  getValueByColumnKey,
+  transfromToObjectArray,
+} from 'app/utils/chart';
+import { toFormattedValue } from 'app/utils/number';
+import { init } from 'echarts';
+import { isEmpty } from 'lodash';
 import Config from './config';
 
 class $TemplateName extends Chart {
   // TODO: if the chart is no extra dependency that is no need to set this value.
   isISOContainer = 'xxx-chart';
+  chart: any = null;
   config = Config;
   dependency = [
     'https://cdnjs.cloudflare.com/ajax/libs/antd/4.15.2/antd.min.css',
   ];
 
   constructor() {
-    super('xxx-table-id', 'XXX Chart Name', 'xxx-icon', ReactTable);
+    super('xxx-table-id', 'XXX Chart Name', 'xxx-icon');
     this.meta.requirements = [
       {
-        group: [0, 999],
-        aggregate: [0, 999],
+        group: [1, 999],
+        aggregate: 1,
+      },
+      {
+        group: 0,
+        aggregate: [1, 999],
       },
     ];
   }
 
   onMount(containerId: string): void {
-    this.chart = this.window.echarts.init(
-      this.document.getElementById(containerId),
-      'default',
-    );
+    this.chart = init(this.document.getElementById(containerId), 'default');
+    this.chart.setOption({});
   }
 
   onUpdated(props): void {
     if (!props.dataset || !props.dataset.columns || !props.config) {
       return;
     }
+
     this.chart?.clear();
     if (!this.isMatchRequirement(props.config)) {
       return;
@@ -61,7 +78,26 @@ class $TemplateName extends Chart {
     this.chart?.dispose();
   }
 
-  getOptions(dataset: VizDataset, config: ChartConfig) { return {}; }
+  getOptions(dataset: ChartDataset, config: ChartConfig) {
+    const styleConfigs = config.styles;
+    const dataConfigs = config.datas || [];
+    const groupConfigs = dataConfigs
+      .filter(c => c.type === ChartDataSectionType.GROUP)
+      .flatMap(config => config.rows || []);
+    const aggregateConfigs = dataConfigs
+      .filter(c => c.type === ChartDataSectionType.AGGREGATE)
+      .flatMap(config => config.rows || []);
+    const colorConfigs = dataConfigs
+      .filter(c => c.type === ChartDataSectionType.COLOR)
+      .flatMap(config => config.rows || []);
+
+    const objDataColumns = transfromToObjectArray(
+      dataset.rows,
+      dataset.columns,
+    ); 
+    
+    return {}; 
+  }
 }
   
 export default $TemplateName;
