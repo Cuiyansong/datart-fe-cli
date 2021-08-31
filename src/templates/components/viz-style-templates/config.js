@@ -23,11 +23,27 @@ const config: ChartConfig = {
     {
       label: 'metrics',
       key: 'metrics',
+      required: true,
+      type: 'group',
     },
     {
       label: 'deminsion',
       key: 'deminsion',
-      columns: [],
+      required: true,
+      type: 'aggregate',
+    },
+    {
+      label: 'filter',
+      key: 'filter',
+      type: 'filter',
+      allowSameField: true,
+      requiredFirstAction: true,
+    },
+    {
+      label: 'colorize',
+      key: 'color',
+      type: 'color',
+      maxFieldCount: 1,
     },
   ],
   styles: [
