@@ -16,23 +16,21 @@ module.exports = `/**
  * limitations under the License.
  */
 
-import ChartConfig from 'app/pages/VizWorkbenchPage/models/ChartConfig';
+import ChartConfig from 'app/pages/ChartWorkbenchPage/models/ChartConfig';
 
 const config: ChartConfig = {
-  data: [
+  datas: [
     {
       label: 'metrics',
       key: 'metrics',
-      actions: ['sortable', 'alias'],
     },
     {
       label: 'deminsion',
       key: 'deminsion',
       columns: [],
-      actions: ['format', 'aggregate'],
     },
   ],
-  style: [
+  styles: [
     {
       label: 'label',
       key: 'label',
@@ -96,7 +94,7 @@ const config: ChartConfig = {
       ],
     },
   ],
-  i18n: [
+  i18ns: [
     {
       lang: 'zh-CN',
       translation: {
