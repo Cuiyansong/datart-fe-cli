@@ -18,19 +18,31 @@ module.exports = `/**
 
 import Chart from 'app/pages/ChartWorkbenchPage/models/Chart';
 import ChartConfig, {
-  ChartDataSectionField,
   ChartDataSectionType,
+  ChartStyleSectionConfig,
+  FieldFormatType,
 } from 'app/pages/ChartWorkbenchPage/models/ChartConfig';
 import ChartDataset from 'app/pages/ChartWorkbenchPage/models/ChartDataset';
 import {
+  getAxisLabel,
+  getAxisLine,
+  getAxisTick,
   getColumnRenderName,
+  getCustomSortableColumns,
+  getNameTextStyle,
+  getReference,
+  getSplitLine,
   getStyleValueByGroup,
   getValueByColumnKey,
   transfromToObjectArray,
 } from 'app/utils/chart';
-import { toFormattedValue } from 'app/utils/number';
+import {
+  toExponential,
+  toPrecision,
+  toUnit,
+  toUnitDesc,
+} from 'app/utils/number';
 import { init } from 'echarts';
-import { isEmpty } from 'lodash';
 import Config from './config';
 
 class $TemplateName extends Chart {
@@ -42,40 +54,49 @@ class $TemplateName extends Chart {
     'https://cdnjs.cloudflare.com/ajax/libs/antd/4.15.2/antd.min.css',
   ];
 
-  constructor() {
-    super('xxx-table-id', 'XXX Chart Name', 'xxx-icon');
-    this.meta.requirements = [
+  constructor(props?) {
+    super(
+      props?.id || 'line',
+      props?.name || 'Basic Line Chart',
+      props?.icon || 'chart-line',
+    );
+    this.meta.requirements = props?.requirements || [
       {
-        group: [1, 999],
-        aggregate: 1,
-      },
-      {
-        group: 0,
+        group: 1,
         aggregate: [1, 999],
       },
     ];
   }
 
-  onMount(containerId: string): void {
-    this.chart = init(this.document.getElementById(containerId), 'default');
-    this.chart.setOption({});
+  onMount(options, context): void {
+    if (options.containerId === undefined || !context.document) {
+      return;
+    }
+
+    this.chart = init(
+      context.document.getElementById(options.containerId),
+      'default',
+    );
   }
 
   onUpdated(props): void {
     if (!props.dataset || !props.dataset.columns || !props.config) {
       return;
     }
-
-    this.chart?.clear();
     if (!this.isMatchRequirement(props.config)) {
+      this.chart?.clear();
       return;
     }
     const newOptions = this.getOptions(props.dataset, props.config);
-    this.chart?.setOption(Object.assign({}, newOptions));
+    this.chart?.setOption(Object.assign({}, newOptions), true);
   }
 
   onUnMount(): void {
     this.chart?.dispose();
+  }
+
+  onResize(opt: any): void {
+    this.chart?.resize(opt);
   }
 
   getOptions(dataset: ChartDataset, config: ChartConfig) {
