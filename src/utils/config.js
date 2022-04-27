@@ -83,7 +83,6 @@ const grcConfigQuestions = [
 
 async function createCLIConfigFile() {
   try {
-    console.log();
     console.log(
       chalk.cyan(
         '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
@@ -105,7 +104,6 @@ async function createCLIConfigFile() {
         '--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------',
       ),
     );
-    console.log();
 
     const answers = await prompt(grcConfigQuestions);
 
@@ -114,7 +112,6 @@ async function createCLIConfigFile() {
       JSON.stringify(answers, null, 2),
     );
 
-    console.log();
     console.log(
       chalk.cyan(
         'The "datart-cli-config.json" config file has been successfully created on the root level of your project.',
